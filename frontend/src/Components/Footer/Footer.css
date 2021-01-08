@@ -1,0 +1,10 @@
+.footer {
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:deeppink;
+    color: white;
+    text-align: center;
+    font-family: 'Luckiest Guy', cursive;
+ }

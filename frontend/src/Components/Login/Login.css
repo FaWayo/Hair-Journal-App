@@ -1,0 +1,16 @@
+.form{
+    margin-top:150px;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-bottom: 100px;
+}
+
+.heading{
+    font-family: 'Satisfy', cursive;
+    margin-top:100px;
+    text-align:center;
+}
+
+input{
+    width:70px;
+}

@@ -1,0 +1,30 @@
+body{
+   margin-left: 20px;
+   margin-right: 20px;
+   
+}
+
+.logo{
+    text-align: center;
+    
+}
+
+h2{
+    font-family: 'Satisfy', cursive;
+}
+
+.logo{
+    font-family: 'Pacifico', cursive;
+}
+
+
+.todo{
+    margin-right: 50px;
+    margin-left:50px;
+
+}
+
+.logo-img{
+    width: 30px;
+    height: 30px;
+}

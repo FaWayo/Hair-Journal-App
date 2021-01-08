@@ -1,0 +1,18 @@
+.profile-button{
+    text-align: right;
+    margin-right:30px;
+}
+.logout-button{
+    text-align: right;
+    margin-right:30px;
+    font-size: 5px;
+}
+
+.media-icons{
+    text-align: right;
+    margin-right:30px;
+}
+
+.logo{
+    font-family: 'Luckiest Guy', cursive;
+}
