@@ -2,12 +2,20 @@ const express = require('express')
 
 const app = express()
 const mongoose = require('mongoose')
+const bodyParser = require("body-parser");
 const entryRouter = require('./controllers/jEntries')
 const userRouter = require('./controllers/user')
+const passport = require("passport");
 
 require('dotenv').config()
 
 const PORT = process.env.PORT || 4000
+
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(bodyParser.json());
+
 
 const config = {
     useNewUrlParser: true,
@@ -31,9 +39,17 @@ mongoose.connect(process.env.MONGODB_URI, config)
     console.log(err)
 })
 
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+require("./config/passport")(passport);
+
 app.use('/note', entryRouter)
 app.use('/user', userRouter)
 
 app.listen(PORT, () => {
     console.log('listening on port', PORT)
 })
+
+module.exports = app;
