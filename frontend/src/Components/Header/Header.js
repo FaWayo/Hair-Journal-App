@@ -4,8 +4,21 @@ import logo from '../../img/logo.png'
 import './Header.css'
 import {Link} from 'react-router-dom'
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../../Store/actions/authActions";
+
 
 function Header() {
+
+     const handleLogout=(event)=>{
+         event.preventDefault();
+         logoutUser();
+     };
+
+   
+        // const { user } = this.props.auth;
+
     return (
         <Jumbotron>
             <div className='logo'>
@@ -26,7 +39,7 @@ function Header() {
             
             </div>
 
-            <div className='logout-button'>
+            <div onClick={handleLogout} className='logout-button'>
             <h3>
                 <Link to='/login'>
                 <i class="fa fa-sign-out" aria-hidden="true"></i>

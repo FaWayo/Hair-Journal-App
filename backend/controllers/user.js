@@ -15,7 +15,7 @@ const validateLoginInput = require("../validation/login");
 
 const User = require('../models/user')
 
-userRouter.post('/signup', (req, res, next) => {
+userRouter.post('/signup', (req, res) => {
 
     const { errors, isValid } = validateRegisterInput(req.body);
    // Check validation
@@ -23,12 +23,12 @@ userRouter.post('/signup', (req, res, next) => {
        return res.status(400).json(errors);
      }
 
-     User.findOne({ username: req.body.username }).then(user => {
+     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
-          return res.status(400).json({ username: "Username already exists" });
+          return res.status(400).json({ email: "Email already exists" });
         } else {
           const newUser = new User({
-            username: req.body.username,
+            name: req.body.name,
             email: req.body.email,
             password: req.body.password
           });
@@ -45,7 +45,7 @@ userRouter.post('/signup', (req, res, next) => {
           });
         }
       });
-      next();
+      
     })
 
     userRouter.post("/login", (req, res) => {
@@ -55,13 +55,14 @@ userRouter.post('/signup', (req, res, next) => {
         if (!isValid) {
           return res.status(400).json(errors);
         }
-      const username = req.body.username;
+
+        const email = req.body.email;
         const password = req.body.password;
       // Find user by email
-        User.findOne({ username }).then(user => {
+        User.findOne({ email }).then(user => {
           // Check if user exists
           if (!user) {
-            return res.status(404).json({ usernamenotfound: "Username not found" });
+            return res.status(404).json({ emailnotfound: "Email not found" });
           }
       // Check password
           bcrypt.compare(password, user.password).then(isMatch => {
@@ -70,7 +71,7 @@ userRouter.post('/signup', (req, res, next) => {
               // Create JWT Payload
               const payload = {
                 id: user.id,
-                username: user.username
+                name: user.name
               };
       // Sign token
               jwt.sign(
@@ -98,4 +99,4 @@ userRouter.post('/signup', (req, res, next) => {
      
 })
 
-module.exports = userRouter
+module.exports = userRouter;

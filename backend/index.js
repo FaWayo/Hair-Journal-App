@@ -1,10 +1,12 @@
-const express = require('express')
+const express = require('express');
 
-const app = express()
-const mongoose = require('mongoose')
+const app = express();
+const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
-const entryRouter = require('./controllers/jEntries')
-const userRouter = require('./controllers/user')
+
+const entryRouter = require('./controllers/jEntries');
+const userRouter = require('./controllers/user');
+
 const passport = require("passport");
 
 require('dotenv').config()
@@ -16,6 +18,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// DB Config
+const db = require("./config/keys").mongoURI
 
 const config = {
     useNewUrlParser: true,
@@ -31,7 +35,7 @@ app.use(function (req, res, next) {
     next()
 })
 
-mongoose.connect(process.env.MONGODB_URI, config)
+mongoose.connect(db, { useNewUrlParser: true })
 .then(() => {
     console.log('Successful connection!')
 })

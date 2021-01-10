@@ -12,18 +12,22 @@ import Footer from './Components/Footer/Footer';
 
 import SamplePost from './Components/SamplePost/SamplePost';
 
+import { Provider } from "react-redux";
+import store from "./Store/store";
 
 
 
 
 function App() {
   return (
-    <div>
+   
+    <Provider store={store}>
        
     
     <Router>
    
          <Switch>
+         <div>
            <Route exact path = '/' component={MainHome}/>
             <Route path='/login' component={Login}/> 
             <Route path='/home' component={Home}/> 
@@ -33,12 +37,12 @@ function App() {
             <Route path='/videos' component={Videos}/> 
             <Route path='/profile' component={Profile}/>
             <Route path='/sample' component={SamplePost}/>
-             
+            </div>    
          </Switch>
          <Footer/>
     </Router> 
+    </Provider>
     
-    </div> 
   )
 }
 
