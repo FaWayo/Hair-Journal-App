@@ -49,8 +49,8 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 
-app.use('/note', entryRouter)
-app.use('/user', userRouter)
+app.use('/notes', entryRouter)
+app.use('/users', userRouter)
 
 app.listen(PORT, () => {
     console.log('listening on port', PORT)

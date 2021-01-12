@@ -1,13 +1,14 @@
 .loginbutton{
     text-align:right;
-}
+    
+} 
 
 .heading{
     font-family: 'Satisfy', cursive;
     margin-top:100px;
     text-align:center;
-}
+} 
 
-.form-control{
-    border-width: 50px;
+.check{
+    margin-right:20px;
 }

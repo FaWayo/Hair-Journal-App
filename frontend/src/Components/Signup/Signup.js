@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Navbar, Button} from 'react-bootstrap'
+import {Navbar, Button, Form} from 'react-bootstrap'
 import {Link, withRouter} from 'react-router-dom'
 import logo from '../../img/logo.png'
 import './Signup.css'
@@ -10,16 +10,15 @@ import { registerUser } from "../../Store/actions/authActions";
 import classnames from "classnames";
 
 class Signup extends Component {
-  constructor() {
-    super();
-    this.state = {
-      name: "",
-      email: "",
-      password: "",
-      password2: "",
-      errors: {}
-    };
-  }
+     constructor() {
+      super();
+      this.state = {
+              name: "",
+              email: "",
+              password: "",
+              errors: {}
+        };
+       }
   
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
@@ -29,6 +28,13 @@ class Signup extends Component {
     }
   }
   
+  componentDidMount() {
+    // If logged in and user navigates to Register page, should redirect them to homepage
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/home");
+    }
+  }
+
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
@@ -36,12 +42,14 @@ class Signup extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const newUser = {
+  const newUser = {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2
     };
+
+  
 
     this.props.registerUser(newUser, this.props.history); 
   };
@@ -50,7 +58,7 @@ class Signup extends Component {
     const { errors } = this.state;
 
     return (
-        <div class="container">
+     <div class="container">
                 <Navbar bg='light'>
                   <Navbar.Brand href="#home">
                     <img
@@ -67,59 +75,88 @@ class Signup extends Component {
                            </Navbar.Collapse>
                            
                            </Navbar>
-                           <div className='heading'><h2>Join This Community!</h2></div>
-                          
-    <form noValidate onSubmit={this.onSubmit} className="form">
-                   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label" >Name</label>
-    <input onChange={this.onChange} placeholder='enter your name' type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" className={classnames("", {
-                    invalid: errors.name
-                  })}/>
-                  <span className="red-text">{errors.name}</span>
+                           <div className='heading'><h2>Grow Your Hair With Ease!</h2></div>
+
+
+
+    <Form noValidate onSubmit={this.onSubmit} className="form">
+    <Form.Group >
+        <Form.Label for="name" >Name</Form.Label>
+        <Form.Control onChange={this.onChange}
+        placeholder='enter your name'
+          type="text"
+          id = "name"
+          value ={this.state.name}
+          error = {errors.name} 
+          className={classnames("", {
+                        invalid: errors.name
+                      })}
+                      />
+          <span className="red-text">{errors.name}</span>
     
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label" >Email Address</label>
-    <input  onChange={this.onChange} placeholder='enter your email' type="email" className="form-control" id="exampleInputPassword1" className={classnames("", {
+  </Form.Group>
+  <Form.Group>
+    <Form.Label  for="email" >Email Address</Form.Label>
+    <Form.Control 
+     onChange={this.onChange}
+     placeholder='enter your email'
+      type="email" 
+      error = {errors.email}
+      id="email"
+      className={classnames("", {
                     invalid: errors.email
                   })}/>
-                  <span className="red-text">{errors.email}</span>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label" >Password</label>
-    <input onChange={this.onChange} placeholder='enter your password' type="password" className="form-control" id="exampleInputPassword1" className={classnames("", {
+      <span className="red-text">{errors.email}</span>
+  </Form.Group>
+  <Form.Group>
+    <Form.Label for='password' class="form-label" >Password</Form.Label>
+    <Form.Control onChange={this.onChange}
+     placeholder='enter your password'
+     error={errors.password}
+     value = {this.state.password}
+     type="password"
+     className="form-control"
+     id="password"
+     className={classnames("", {
                     invalid: errors.password
                   })}/>
-                  <span className="red-text">{errors.password}</span>
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
-    <label class="form-check-label" for="exampleCheck1"> <p>I Agree to the terms and conditions</p></label>
-  </div>
-  <button type="submit" class="btn btn-primary">Sign Up</button>
+      <span className="red-text">{errors.password}</span>
+   </Form.Group>
 
- 
-</form>
+    
+  <Form.Group classname="check">
+    <Form.Check type="checkbox" label="I Agree to the terms and conditions" id="exampleCheck1"/>
+    
+  </Form.Group>
+  <Button type="submit" class="btn btn-primary">Sign Up</Button>
 
-    <div className='loginbutton'>
-                            <Link to='/login'><Button variant='outline-primary'>Login</Button></Link>
-  </div>
-</div>
+      
+     <div className='loginbutton'>
+         <span>Already Have An Account?</span><Link to='/login'><Button size="sm" variant='primary'>Login</Button></Link>
+      </div>
+
+     </Form>
+
+      
+    </div>
                     
         );
             
         
+  }
 }
-}
+
 Signup.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
+
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors
 });
+
 export default connect(
   mapStateToProps,
   { registerUser }

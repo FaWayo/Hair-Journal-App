@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import logo from '../../img/logo.png'
 import './Header.css'
@@ -9,16 +9,16 @@ import { connect } from "react-redux";
 import { logoutUser } from "../../Store/actions/authActions";
 
 
-function Header() {
+class Header extends Component {
+    onLogoutClick = e => {
+        e.preventDefault();
+        this.props.logoutUser();
+      };
+    render() {
+        const { user } = this.props.auth;
 
-     const handleLogout=(event)=>{
-         event.preventDefault();
-         logoutUser();
-     };
 
-   
-        // const { user } = this.props.auth;
-
+    
     return (
         <Jumbotron>
             <div className='logo'>
@@ -39,7 +39,7 @@ function Header() {
             
             </div>
 
-            <div onClick={handleLogout} className='logout-button'>
+            <div onClick={this.onLogoutClick} className='logout-button'>
             <h3>
                 <Link to='/login'>
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -60,7 +60,20 @@ function Header() {
                  
             
   
-    )
+    );
+}
 }
 
-export default Header
+Header.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+  };
+
+  const mapStateToProps = state => ({
+    auth: state.auth
+  });
+
+  export default connect(
+    mapStateToProps,
+    { logoutUser }
+  )(Header);
