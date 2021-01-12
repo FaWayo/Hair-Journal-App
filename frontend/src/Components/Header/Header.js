@@ -1,22 +1,14 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import logo from '../../img/logo.png'
 import './Header.css'
 import {Link} from 'react-router-dom'
 
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { logoutUser } from "../../Store/actions/authActions";
 
 
-class Header extends Component {
-    onLogoutClick = e => {
-        e.preventDefault();
-        this.props.logoutUser();
-      };
-    render() {
-        const { user } = this.props.auth;
-
+function Header()  {
+   
+    
 
     
     return (
@@ -39,7 +31,7 @@ class Header extends Component {
             
             </div>
 
-            <div onClick={this.onLogoutClick} className='logout-button'>
+            <div className='logout-button'>
             <h3>
                 <Link to='/login'>
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -62,18 +54,5 @@ class Header extends Component {
   
     );
 }
-}
 
-Header.propTypes = {
-    logoutUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
-  };
-
-  const mapStateToProps = state => ({
-    auth: state.auth
-  });
-
-  export default connect(
-    mapStateToProps,
-    { logoutUser }
-  )(Header);
+export default Header;

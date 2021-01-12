@@ -1,64 +1,39 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Navbar, Button, Form} from 'react-bootstrap'
 import logo from '../../img/logo.png'
 import './Login.css'
 
-// import axios from 'axios'; 
+ import Axios from 'axios'; 
 
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { loginUser } from "../../Store/actions/authActions";
-import classnames from "classnames";
 
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: "",
-      errors: {}
+
+function Login()  {
+     
+     const[email, setEmail] = useState('')
+     const[password, setPassword] = useState('')
+  
+     const login = () => {
+      Axios({
+        method: "POST",
+        data: {
+          email:email,
+          password: password,
+        },
+        withCredentials: true,
+        url: "http://localhost:4000/users/login",
+      }).then((res) => console.log(res));
     };
-  }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/home"); // push user to login page
-    }
-
-    
-
-if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
-    }
-  }
-
-  onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
-  };
-
-onSubmit = e => {
-    e.preventDefault();
-
-    const userData = {
-          email: this.state.email,
-          password: this.state.password
-        };
-
-    this.props.loginUser(userData); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
-      };
-
-      componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/home");
-    }
-  }
-    render() {
-      const { errors } = this.state;
-
+    const handleEmail = (event)=>{
+      setEmail(event.target.value)
+      console.log(email)
+     }
+  
+     const handlePassword=(event)=>{
+      setPassword(event.target.value)
+      console.log(password)
+     }
 
     return (
         <div class='container'>
@@ -85,42 +60,31 @@ onSubmit = e => {
             <h2>Welcome!</h2>
           </div>
 
-        <Form noValidate onSubmit = {this.onSubmit} className="form">
+        <Form noValidate onSubmit = {login} className="form">
             <Form.Group>
-              <Form.Label for="email" >Username</Form.Label>
+              <Form.Label for="email" >Email</Form.Label>
               <Form.Control
-                   onChange={this.onChange}
+                   onChange={handleEmail}
                   type="email" 
                    id="email" 
-                   value={this.state.email} 
-                   error={errors.email}
-                   className={classnames("", {
-                              invalid: errors.email || errors.emailnotfound
-                            })}/>
-                      <span className="red-text">
-                            {errors.email}
-                            {errors.emailnotfound}
-                      </span>
+                   value={email} 
+                   />
+                      
               
             </Form.Group>
            <Form.Group>
                 <Form.Label for="password"  >Password</Form.Label>
                 <Form.Control 
-                      onChange={this.onChange}
-                      value={this.state.password}
-                      error={errors.email}
+                      onChange={handlePassword}
+                      value={password}
+                      
                       type="password"
                         id="password"
-                      className={classnames("", {
-                          invalid: errors.password || errors.passwordincorrect
-                        })}/>
-                        <span className="red-text">
-                          {errors.password}
-                          {errors.passwordincorrect}
-                        </span>
+                      />
+                       
              </Form.Group>
   
-  <Link to='/home'><button type="submit" class="btn btn-primary">Login</button></Link>
+  <Link to='/home'><button  onClick={login} type="submit" class="btn btn-primary">Login</button></Link>
 
   <br/>
                     Don't have an account? <Link to ="/signup"> <Button variant="link"> Sign up </Button> </Link>
@@ -132,20 +96,5 @@ onSubmit = e => {
         
     )
  }
-}
 
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
-});
-
-export default connect(
-  mapStateToProps,
-  { loginUser }
-)(Login);
+ export default Login;

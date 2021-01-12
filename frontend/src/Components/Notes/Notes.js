@@ -1,23 +1,53 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Form, Card, Col, Button} from 'react-bootstrap'
 import { NoteContent } from './NoteContent';
 import './Notes.css';
+import axios from 'axios'
 
 function Notes() {
-    
-        const[value, setValue] = React.useState([]);
-        const[notes, setNotes] = React.useState({NoteContent})
+    const API_ENDPOINT = process.env.API_ENDPOINT || 'https://localhost://4000/journals'
+    const [ fronthair, setFronthair ] = useState('')
+    const [ backhair, setBackhair ] = useState('')
+    const [ currentreg, setCurrentReg] = useState('')
+    const [ success, setSuccess ] = useState(false)
+
+    function handleFronthair(event){
+        setFronthair(event.target.value)
+    }
+
+    function handleBackhair(event){
+        setBackhair(event.target.value)
+    }
+
+    function Currentreg(event){
+        setCurrentReg(event.target.value)
+    }
         const handleSubmit = e =>{
             e.preventDefault();
             if(!value) return;
             addNote(value);
             setValue([]);
         }
+
+        
+    function addJournal(){
+        axios.post(`http://localhost:4000/journals`, {
+            "hairFrontStat":hairfrontlength,
+            "hairBackStat": hairbacklength,
+            "currentReg": currentreg
+        })
+        .then((res) => {
+            console.log(res.body)
+            setSuccess(true)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        setFronthair('')
+        setBackhair('')
+        setCurrentReg('')
+    }
     
-        const addNote = text => {
-            const newNotes = [...NoteContent, { text }];
-            setNotes(newNotes);
-          };
     return (
         <div>
             

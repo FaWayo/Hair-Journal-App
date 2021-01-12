@@ -1,10 +1,10 @@
 const express = require('express');
-
+const cors = require("cors");
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 
-const entryRouter = require('./controllers/jEntries');
+const journalRouter = require('./controllers/journaldata');
 const userRouter = require('./controllers/user');
 
 const passport = require("passport");
@@ -17,6 +17,18 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // <-- location of the react app were connecting to
+    credentials: true,
+  })
+);
+
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*")
+    res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+})
 
 // DB Config
 const db = require("./config/keys").mongoURI
@@ -49,7 +61,7 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 
-app.use('/notes', entryRouter)
+app.use('/journals', journalRouter)
 app.use('/users', userRouter)
 
 app.listen(PORT, () => {

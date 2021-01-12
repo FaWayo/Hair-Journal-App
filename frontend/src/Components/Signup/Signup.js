@@ -1,61 +1,47 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {Navbar, Button, Form} from 'react-bootstrap'
-import {Link, withRouter} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import logo from '../../img/logo.png'
 import './Signup.css'
+import Axios from 'axios';
 
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { registerUser } from "../../Store/actions/authActions";
-import classnames from "classnames";
 
-class Signup extends Component {
-     constructor() {
-      super();
-      this.state = {
-              name: "",
-              email: "",
-              password: "",
-              errors: {}
-        };
-       }
+function Signup() {
+     const[username, setUsername] = useState('')
+     const[email, setEmail] = useState('')
+     const[password, setPassword] = useState('')
+
+   const register = () => {
+   Axios({
+      method: "POST",
+      data: {
+        username: username,
+        email: email,
+        password: password,
+      },
+      withCredentials: true,
+      url: "http://localhost:4000/users/signup",
+    }).then((res)=> console.log(res));
+    alert('You have signed up')
+   
+   };
   
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors
-      });
-    }
-  }
-  
-  componentDidMount() {
-    // If logged in and user navigates to Register page, should redirect them to homepage
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/home");
-    }
-  }
+   const handleUsername = (event)=>{
+    setUsername(event.target.value)
+    console.log(username)
+   }
 
-  onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
-  };
-        
-  onSubmit = e => {
-    e.preventDefault();
+   const handlePassword=(event)=>{
+    setPassword(event.target.value)
+    console.log(password)
+   }
 
-  const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
-    };
+   const handleEmail=(event)=>{
+    setEmail(event.target.value)
+    console.log(email)
+   }
 
-  
 
-    this.props.registerUser(newUser, this.props.history); 
-  };
-
-  render() {
-    const { errors } = this.state;
 
     return (
      <div class="container">
@@ -79,48 +65,40 @@ class Signup extends Component {
 
 
 
-    <Form noValidate onSubmit={this.onSubmit} className="form">
+    <Form noValidate onSubmit={register} className="form">
     <Form.Group >
-        <Form.Label for="name" >Name</Form.Label>
-        <Form.Control onChange={this.onChange}
-        placeholder='enter your name'
+        <Form.Label for="name" >Userame</Form.Label>
+        <Form.Control onChange={handleUsername}
+        placeholder='create your username'
           type="text"
           id = "name"
-          value ={this.state.name}
-          error = {errors.name} 
-          className={classnames("", {
-                        invalid: errors.name
-                      })}
-                      />
-          <span className="red-text">{errors.name}</span>
+          value ={username}
+          />
+          
     
   </Form.Group>
   <Form.Group>
     <Form.Label  for="email" >Email Address</Form.Label>
     <Form.Control 
-     onChange={this.onChange}
+     onChange={handleEmail}
      placeholder='enter your email'
       type="email" 
-      error = {errors.email}
+      value ={email}
       id="email"
-      className={classnames("", {
-                    invalid: errors.email
-                  })}/>
-      <span className="red-text">{errors.email}</span>
+      />
+      
   </Form.Group>
   <Form.Group>
     <Form.Label for='password' class="form-label" >Password</Form.Label>
-    <Form.Control onChange={this.onChange}
+    <Form.Control onChange={handlePassword}
      placeholder='enter your password'
-     error={errors.password}
-     value = {this.state.password}
+     
+     value = {password}
      type="password"
      className="form-control"
      id="password"
-     className={classnames("", {
-                    invalid: errors.password
-                  })}/>
-      <span className="red-text">{errors.password}</span>
+    />
+      
    </Form.Group>
 
     
@@ -128,7 +106,7 @@ class Signup extends Component {
     <Form.Check type="checkbox" label="I Agree to the terms and conditions" id="exampleCheck1"/>
     
   </Form.Group>
-  <Button type="submit" class="btn btn-primary">Sign Up</Button>
+  <Button type="submit" onClick={register}>Sign Up</Button>
 
       
      <div className='loginbutton'>
@@ -144,22 +122,8 @@ class Signup extends Component {
             
         
   }
-}
 
-Signup.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
-});
-
-export default connect(
-  mapStateToProps,
-  { registerUser }
-)(withRouter(Signup));
+export default Signup;
 
 
