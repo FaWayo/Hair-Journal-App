@@ -1,6 +1,6 @@
 import React from 'react'
 import Navibar from '../NaviBar'
-import {Card, Button} from 'react-bootstrap'
+import {Card} from 'react-bootstrap'
 import { HairTipsContent } from './HairTipsContent';
 
 function HairTips() {

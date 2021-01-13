@@ -1,10 +1,12 @@
 import React from 'react'
 import "./Profile.css"
-import {Jumbotron } from 'react-bootstrap'
+import {Jumbotron} from 'react-bootstrap'
 import logo from '../../img/logo.png'
-import Notes from './../Notes/Notes';
+
 import Navbar from './../NaviBar'
 import ToDo from '../To-dos/ToDoo';
+// import JournalList from '../Journal/JournalList';
+import NewJournal from '../Journal/NewJournal';
 
 function Profile() {
   return (
@@ -31,7 +33,10 @@ function Profile() {
         </div>
       
        <div className="notes">
-         <Notes/>
+         {/* <JournalList/> */}
+         
+           <br/>
+         <NewJournal/>
          
         </div> 
       </div>

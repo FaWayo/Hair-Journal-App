@@ -19,7 +19,7 @@ function SamplePost() {
             <div>
                 <Card>
                 <Card.Title>
-                     What Type of Hair Porosity Do You Have?
+                     <h1>What Type of Hair Porosity Do You Have?</h1>
                      
                 </Card.Title>   
                 <Card.Img></Card.Img>

@@ -32,6 +32,11 @@ function MainHome() {
                  
         
                            <div className="pre">
+                               
+       <div class="d-flex justify-content-center">
+       <Link to ='/login'> <button type="button" className="btn btn-primary">login</button></Link> <span>OR</span>
+                     <p><Link to ='/signup'><button type="button" className="btn btn-outline-primary">sign up</button></Link></p>
+             </div>
              <div>
              <img src={logo} alt='logo'/>
                   </div>
